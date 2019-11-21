@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+	<title>JSON PLace Holders</title>
+	<meta charset="utf-8"/>
+	<script>
+		function loadFile() {
+			/* Step 1: Make instance of request object...
+			...to make HTTP request after page is loaded*/
+			request = new XMLHttpRequest();
+			console.log("1 - request object created");
+ 
+			// Step 2: Set the URL for the AJAX request to be the JSON file
+ 
+			request.open("GET", "https://jsonplaceholder.typicode.com/todos/", true);
+			console.log("status: " + request.statusText);
+
+			console.log("2 - opened request file");
+ 
+			// Step 3: set up event handler/callback
+
+			request.onreadystatechange = function() {
+				console.log("3 - readystatechange event fired.");
+ 
+				if (request.readyState == 4 && request.status == 200) {
+
+					// Step 5: wait for done + success
+					result = request.responseText;
+					console.log("Result: " + result);
+					res = JSON.parse(result);
+					
+					strHTML = "<ul>";
+					res.forEach(function(todo) { 
+					  strHTML += "<li>Here is a single JSON placeholder:  " + todo.title + "</li>";
+					}) 
+					strHTML += "</ul>";
+					console.log("here");
+					document.getElementById("data").innerHTML =strHTML;  
+				}
+				else if (request.readyState == 4 && request.status != 200) {
+
+					document.getElementById("data").innerHTML = "Something is wrong!  Check the logs to see where this went off the rails";
+
+				}
+
+				else if (request.readyState == 3) {
+
+					document.getElementById("data").innerHTML = "Too soon!  Try again";
+
+				}
+
+			}
+		// Step 4: fire off the HTTP request
+			request.send();
+			console.log("4 - Request sent");
+		}
+	</script>
+</head>
+
+
+<body onload="loadFile()">
+
+	<h1>JSON Placeholders!</h1>
+	<div id="data">Loading...</div>
+	<div style="text-align: center; font-family: 'helvetica'"> I chose to use the JSON Placeholders API which automatically generates lorem ipsum for use in testing and temporarily populating copy. <br>
+	      I found the API here: https://www.diycode.cc/projects/toddmotto/public-apis. <br>
+	      The option I chose to use here "/todos/" which generates a specific format of dummy-font, as apposed to other options such as posts or comments. <br>
+	      This API might be useful in an application for generating web-page templates, or for an application which allows users to desing posters with a simple drag and drop interface. <br> 
+</body>
+</html>
